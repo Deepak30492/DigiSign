@@ -28,7 +28,7 @@ class DigiSignControllerTest {
 	private ObjectMapper objectMapper;
 
 	@Test
-	public void generatePdfAndSignTest() throws Exception {
+	void generatePdfAndSignTest() throws Exception {
 		mockMvc.perform(post("/digiSign/signDoc") //
 				.contentType(MediaType.APPLICATION_JSON) //
 				.content(createSuccessJson()));

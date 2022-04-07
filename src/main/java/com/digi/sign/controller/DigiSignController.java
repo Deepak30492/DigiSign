@@ -27,7 +27,6 @@ import com.digi.sign.exception.DigiSignException;
 import com.digi.sign.exception.DigiSignUserException;
 import com.digi.sign.service.DigiSignService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 public class DigiSignController {
@@ -103,9 +102,6 @@ public class DigiSignController {
 
 		IntegratorRequestTO request = new IntegratorRequestTO();
 		request.setDocument(document);
-		
-		ObjectMapper mapper = new ObjectMapper();
-		System.out.println(mapper.writeValueAsString(request));
 
 		return generatePdfAndSign(request);
 	}
