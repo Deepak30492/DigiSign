@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Redirection Page</title>
+<script>
+	window.onload = function() {
+		document.getElementById('submit').click();
+	};
+</script>
+</head>
+<body>
+	<h1>Redirecting to e-authentication page.....</h1>
+	<form id="espForm" method="POST" action="${espRequest.espUrl}">
+		<input type="hidden" id="eSignRequest" name="eSignRequest"
+			value='${espRequest.espRequest}' /> <input type="hidden"
+			id="aspTxnID" name="aspTxnID" value='${espRequest.aspTxnId}' /> <input
+			type="hidden" id="Content-Type" name="Content-Type"
+			value='${espRequest.contentType}' />
+		<button id="submit" type="submit" hidden="hidden">Submit</button>
+	</form>
+</body>
+</html>
