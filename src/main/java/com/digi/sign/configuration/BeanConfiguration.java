@@ -13,7 +13,7 @@ public class BeanConfiguration {
 	public ObjectMapper xmlMapper() {
 		return new XmlMapper();
 	}
-	
+
 	@Bean("objectMapper")
 	public ObjectMapper objectMapper() {
 		return new ObjectMapper();

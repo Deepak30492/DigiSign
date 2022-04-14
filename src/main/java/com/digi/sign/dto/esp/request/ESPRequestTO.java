@@ -7,7 +7,7 @@ public class ESPRequestTO {
 	private String aspTxnId;
 
 	private String contentType;
-	
+
 	private String espUrl;
 
 	public String getEspRequest() {

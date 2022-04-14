@@ -1,22 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Redirection Page</title>
-<script>
-	window.onload = function() {
-		document.getElementById('submit').click();
-	};
-</script>
+<title>ESP Request Form</title>
 </head>
 <body>
-	<h1>Redirecting to e-authentication page.....</h1>
+	<h2>Facilities Data :</h2>
+	<table border="1">
+		<tr>
+			<th>SrNo</th>
+			<th>Facility Id</th>
+			<th>Facility Name</th>
+			<th>State/UT</th>
+			<th>District</th>
+			<th>Address & Pincode</th>
+			<th>Facility OwnerShip</th>
+			<th>Status</th>
+			<th>Submitted Date</th>
+		</tr>
+		<#list facilties as facility>
+		<tr>
+			<td>${facility.srNo}</td>
+			<td>${facility.facilityId}</td>
+			<td>${facility.facilityName}</td>
+			<td>${facility.stateOrUt}</td>
+			<td>${facility.district}</td>
+			<td>${facility.addressWithPincode}</td>
+			<td>${facility.facilityOwnership}</td>
+			<td>${facility.status}</td>
+			<td>${facility.submittedDate}</td>
+		</tr>
+		</#list>
+	</table>
 	<form id="espForm" method="POST" action="${espRequest.espUrl}">
 		<input type="hidden" id="eSignRequest" name="eSignRequest"
 			value='${espRequest.espRequest}' /> <input type="hidden"
 			id="aspTxnID" name="aspTxnID" value='${espRequest.aspTxnId}' /> <input
 			type="hidden" id="Content-Type" name="Content-Type"
 			value='${espRequest.contentType}' />
-		<button id="submit" type="submit" hidden="hidden">Submit</button>
+		<br>
+		<button id="submit" type="submit">Submit</button>
 	</form>
 </body>
 </html>

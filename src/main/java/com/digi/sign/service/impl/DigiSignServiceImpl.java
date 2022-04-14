@@ -38,8 +38,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class DigiSignServiceImpl implements DigiSignService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DigiSignServiceImpl.class);
-	
-	private static final List<String> USER_FORWARDABLE_CODES = new ArrayList<>(Arrays.asList("110", "111", "950", "952", "953"));
+
+	private static final List<String> USER_FORWARDABLE_CODES = new ArrayList<>(
+			Arrays.asList("110", "111", "950", "952", "953"));
 
 	@Autowired
 	private ESPProperties espProperties;
@@ -98,27 +99,31 @@ public class DigiSignServiceImpl implements DigiSignService {
 	}
 
 	@Override
-	public FileSystemResource handleEspResponse(Map<String, String> requestParams) throws DigiSignException, DigiSignUserException {
+	public FileSystemResource handleEspResponse(Map<String, String> requestParams)
+			throws DigiSignException, DigiSignUserException {
 		ESPResponseFormTO espResponseForm = xmlMapper.convertValue(requestParams,
 				new TypeReference<ESPResponseFormTO>() {
 				});
 		try {
-			InnerESPResponseTO espResponse = xmlMapper
-					.readValue(espResponseForm.getEspOuterResponse().getBytes(), InnerESPResponseTO.class);
-			if(!"1".equals(espResponse.getStatus())) {
-				if(USER_FORWARDABLE_CODES.contains(espResponse.getErrorCode())) {
+			InnerESPResponseTO espResponse = xmlMapper.readValue(espResponseForm.getEspOuterResponse().getBytes(),
+					InnerESPResponseTO.class);
+			if (!"1".equals(espResponse.getStatus())) {
+				if (USER_FORWARDABLE_CODES.contains(espResponse.getErrorCode())) {
 					LOGGER.error(espResponseForm.getEspOuterResponse());
-					throw new DigiSignUserException(espResponse.getErrorCode()+ " : " +espResponse.getErrorMessage());
+					throw new DigiSignUserException(espResponse.getErrorCode() + " : " + espResponse.getErrorMessage());
 				} else {
 					LOGGER.error(espResponseForm.getEspOuterResponse());
-					throw new DigiSignException("Internal error occurred, received error from ESP! Please try again or contact DigiSign");
+					throw new DigiSignException(
+							"Internal error occurred, received error from ESP! Please try again or contact DigiSign");
 				}
 			}
-			return pdfService.signPdf(espResponse.getPdfSignature().getDocSign().getPkcs7CmsContainer(), espResponse.getTxnId());
+			return pdfService.signPdf(espResponse.getPdfSignature().getDocSign().getPkcs7CmsContainer(),
+					espResponse.getTxnId());
 
 		} catch (IOException e) {
 			LOGGER.error(ExceptionUtils.getStackTrace(e));
-			throw new DigiSignException("Internal error occurred during ESP response parsing! Please try again or contact DigiSign");
+			throw new DigiSignException(
+					"Internal error occurred during ESP response parsing! Please try again or contact DigiSign");
 
 		}
 

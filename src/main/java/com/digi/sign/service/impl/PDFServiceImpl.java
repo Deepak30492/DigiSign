@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 
+import com.digi.sign.constant.DigiSignGlobalConstants;
 import com.digi.sign.constant.HFRDocTemplateEnum;
 import com.digi.sign.constant.IntegratorEnum;
 import com.digi.sign.dto.esp.request.InputHashTO;
@@ -63,8 +64,6 @@ public class PDFServiceImpl implements PDFService {
 
 	private static final String SIGNATURE_FIELD_NAME = "digiSign1";
 
-	private static final String UNSIGNED_PDF_PATH = "src/main/resources/pdfs/unsigned/";
-
 	private static final String SIGNED_PDF_PATH = "src/main/resources/pdfs/signed/";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PDFServiceImpl.class);
@@ -85,7 +84,7 @@ public class PDFServiceImpl implements PDFService {
 	private void createPdfInHfrTemplate1Format(String pdfName, HFRDocumentTO hfrDocument, String dateWithTime)
 			throws DigiSignException {
 		try {
-			try (PdfWriter pdfWriter = new PdfWriter(UNSIGNED_PDF_PATH.concat(pdfName).concat(".pdf"));
+			try (PdfWriter pdfWriter = new PdfWriter(DigiSignGlobalConstants.UNSIGNED_PDF_PATH + pdfName + ".pdf");
 					PdfDocument pdfDocument = new PdfDocument(pdfWriter);
 					Document document = new Document(pdfDocument);) {
 
@@ -111,7 +110,8 @@ public class PDFServiceImpl implements PDFService {
 			}
 		} catch (IOException e) {
 			LOGGER.error(ExceptionUtils.getStackTrace(e));
-			throw new DigiSignException("Internal error occurred during pdf creation! Please try again or contact DigiSign");
+			throw new DigiSignException(
+					"Internal error occurred during pdf creation! Please try again or contact DigiSign");
 		}
 	}
 
@@ -121,7 +121,7 @@ public class PDFServiceImpl implements PDFService {
 			PdfDocumentEvent docEvent = (PdfDocumentEvent) currentEvent;
 			PdfCanvas canvas = new PdfCanvas(docEvent.getPage());
 			Rectangle defaultPageSize = docEvent.getPage().getPageSize();
-			canvas.rectangle(30, 30, defaultPageSize.getWidth() - 60, defaultPageSize.getHeight() - 60).stroke();
+			canvas.rectangle(15, 15, defaultPageSize.getWidth() - 30, defaultPageSize.getHeight() - 30).stroke();
 		}
 	}
 
@@ -276,93 +276,93 @@ public class PDFServiceImpl implements PDFService {
 		hospiTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
 
 		Cell hospiCellheader = new Cell().add(new Paragraph("SrNo"));
-		hospiCellheader.setFontSize(10);
+		hospiCellheader.setFontSize(9);
 		hospiCellheader.setTextAlignment(TextAlignment.CENTER);
 		hospiTable.addCell(hospiCellheader);
 
 		hospiCellheader = new Cell().add(new Paragraph("Facility Id"));
-		hospiCellheader.setFontSize(10);
+		hospiCellheader.setFontSize(9);
 		hospiCellheader.setTextAlignment(TextAlignment.CENTER);
 		hospiTable.addCell(hospiCellheader);
 
 		hospiCellheader = new Cell().add(new Paragraph("Facility Name"));
-		hospiCellheader.setFontSize(10);
+		hospiCellheader.setFontSize(9);
 		hospiCellheader.setTextAlignment(TextAlignment.CENTER);
 		hospiTable.addCell(hospiCellheader);
 
 		hospiCellheader = new Cell().add(new Paragraph("State/UT"));
-		hospiCellheader.setFontSize(10);
+		hospiCellheader.setFontSize(9);
 		hospiCellheader.setTextAlignment(TextAlignment.CENTER);
 		hospiTable.addCell(hospiCellheader);
 
 		hospiCellheader = new Cell().add(new Paragraph("District"));
-		hospiCellheader.setFontSize(10);
+		hospiCellheader.setFontSize(9);
 		hospiCellheader.setTextAlignment(TextAlignment.CENTER);
 		hospiTable.addCell(hospiCellheader);
 
 		hospiCellheader = new Cell().add(new Paragraph("Address & Pincode"));
-		hospiCellheader.setFontSize(10);
+		hospiCellheader.setFontSize(9);
 		hospiCellheader.setTextAlignment(TextAlignment.CENTER);
 		hospiTable.addCell(hospiCellheader);
 
 		hospiCellheader = new Cell().add(new Paragraph("Facility OwnerShip"));
-		hospiCellheader.setFontSize(10);
+		hospiCellheader.setFontSize(9);
 		hospiCellheader.setTextAlignment(TextAlignment.CENTER);
 		hospiTable.addCell(hospiCellheader);
 
 		hospiCellheader = new Cell().add(new Paragraph("Status"));
-		hospiCellheader.setFontSize(10);
+		hospiCellheader.setFontSize(9);
 		hospiCellheader.setTextAlignment(TextAlignment.CENTER);
 		hospiTable.addCell(hospiCellheader);
 
 		hospiCellheader = new Cell().add(new Paragraph("Submitted Date"));
-		hospiCellheader.setFontSize(10);
+		hospiCellheader.setFontSize(9);
 		hospiCellheader.setTextAlignment(TextAlignment.CENTER);
 		hospiTable.addCell(hospiCellheader);
 
 		for (FacilityTO facility : facilities) {
 			Cell hospiCell = new Cell();
-			hospiCell.setFontSize(9);
+			hospiCell.setFontSize(8);
 			hospiCell.add(new Paragraph(facility.getSrNo()));
 			hospiTable.addCell(hospiCell);
 
 			hospiCell = new Cell();
-			hospiCell.setFontSize(9);
+			hospiCell.setFontSize(8);
 			hospiCell.add(new Paragraph(facility.getFacilityId()));
 			hospiTable.addCell(hospiCell);
 
 			hospiCell = new Cell();
-			hospiCell.setFontSize(9);
+			hospiCell.setFontSize(8);
 			hospiCell.add(new Paragraph(facility.getFacilityName()));
 			hospiTable.addCell(hospiCell);
 
 			hospiCell = new Cell();
-			hospiCell.setFontSize(9);
+			hospiCell.setFontSize(8);
 			hospiCell.add(new Paragraph(facility.getStateOrUt()));
 			hospiTable.addCell(hospiCell);
 
 			hospiCell = new Cell();
-			hospiCell.setFontSize(9);
+			hospiCell.setFontSize(8);
 			hospiCell.add(new Paragraph(facility.getDistrict()));
 			hospiTable.addCell(hospiCell);
 
 			hospiCell = new Cell();
-			hospiCell.setFontSize(9);
+			hospiCell.setFontSize(8);
 			hospiCell.add(new Paragraph(facility.getAddressWithPincode()));
 			hospiTable.addCell(hospiCell);
 
 			hospiCell = new Cell();
-			hospiCell.setFontSize(9);
+			hospiCell.setFontSize(8);
 			hospiCell.add(new Paragraph(facility.getFacilityOwnership()));
 			hospiTable.addCell(hospiCell);
 
 			hospiCell = new Cell();
-			hospiCell.setFontSize(9);
+			hospiCell.setFontSize(8);
 			hospiCell.add(new Paragraph(facility.getStatus()));
 			hospiTable.addCell(hospiCell);
 
 			hospiCell = new Cell();
-			hospiCell.setFontSize(9);
+			hospiCell.setFontSize(8);
 			hospiCell.add(new Paragraph(facility.getSubmittedDate()));
 			hospiTable.addCell(hospiCell);
 		}
@@ -391,9 +391,9 @@ public class PDFServiceImpl implements PDFService {
 	}
 
 	private String getHashToSign(String pdfName, HFRDocumentTO hfrDocument) throws DigiSignException {
-		try (PdfReader pdfReader = new PdfReader(UNSIGNED_PDF_PATH.concat(pdfName).concat(".pdf"));
+		try (PdfReader pdfReader = new PdfReader(DigiSignGlobalConstants.UNSIGNED_PDF_PATH + pdfName + ".pdf");
 				FileOutputStream pdfWithSigField = new FileOutputStream(
-						UNSIGNED_PDF_PATH.concat(pdfName).concat(WITH_PLACEHOLDER_SIGN_FIELD_PDF_LABEL))) {
+						DigiSignGlobalConstants.UNSIGNED_PDF_PATH + pdfName + WITH_PLACEHOLDER_SIGN_FIELD_PDF_LABEL)) {
 			PdfSigner signer = new PdfSigner(pdfReader, pdfWithSigField, new StampingProperties().useAppendMode());
 			signer.setFieldName(SIGNATURE_FIELD_NAME);
 			Calendar instance = Calendar.getInstance();
@@ -409,12 +409,13 @@ public class PDFServiceImpl implements PDFService {
 					PdfName.Adbe_pkcs7_detached);
 			signer.signExternalContainer(external, 15000);
 
-			Files.deleteIfExists(Paths.get(UNSIGNED_PDF_PATH.concat(pdfName).concat(".pdf")));
+			Files.deleteIfExists(Paths.get(DigiSignGlobalConstants.UNSIGNED_PDF_PATH + pdfName + ".pdf"));
 
 			return DigestUtils.sha256Hex(external.getHash());
 		} catch (IOException | GeneralSecurityException e) {
 			LOGGER.error(ExceptionUtils.getStackTrace(e));
-			throw new DigiSignException("Internal error occurred during pdf hashing! Please try again or contact DigiSign");
+			throw new DigiSignException(
+					"Internal error occurred during pdf hashing! Please try again or contact DigiSign");
 		}
 	}
 
@@ -454,16 +455,16 @@ public class PDFServiceImpl implements PDFService {
 	@Override
 	public FileSystemResource signPdf(String pkcs7CmsContainer, String pdfName) throws DigiSignException {
 		try (PdfReader pdfReader = new PdfReader(
-				UNSIGNED_PDF_PATH.concat(pdfName).concat(WITH_PLACEHOLDER_SIGN_FIELD_PDF_LABEL));
-				FileOutputStream signedPdfStream = new FileOutputStream(
-						SIGNED_PDF_PATH.concat(pdfName).concat(".pdf"))) {
+				DigiSignGlobalConstants.UNSIGNED_PDF_PATH + pdfName + WITH_PLACEHOLDER_SIGN_FIELD_PDF_LABEL);
+				FileOutputStream signedPdfStream = new FileOutputStream(SIGNED_PDF_PATH + pdfName + ".pdf")) {
 			IExternalSignatureContainer container = new PostSignatureContainer(PdfName.Adobe_PPKLite,
 					PdfName.Adbe_pkcs7_detached, pkcs7CmsContainer);
 			PdfSigner.signDeferred(new PdfDocument(pdfReader), SIGNATURE_FIELD_NAME, signedPdfStream, container);
-			return new FileSystemResource(SIGNED_PDF_PATH.concat(pdfName).concat(".pdf"));
+			return new FileSystemResource(SIGNED_PDF_PATH + pdfName + ".pdf");
 		} catch (IOException | GeneralSecurityException e) {
 			LOGGER.error(ExceptionUtils.getStackTrace(e));
-			throw new DigiSignException("Internal error occurred during pdf signing! Please try again or contact DigiSign");
+			throw new DigiSignException(
+					"Internal error occurred during pdf signing! Please try again or contact DigiSign");
 		}
 	}
 

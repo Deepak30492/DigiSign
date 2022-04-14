@@ -70,7 +70,8 @@ public class XMLServiceImpl implements XMLService {
 			return xmlMapper.writeValueAsString(esp);
 		} catch (JsonProcessingException e) {
 			LOGGER.error(ExceptionUtils.getStackTrace(e));
-			throw new DigiSignException("Internal error occurred during xml creation! Please try again or contact DigiSign");
+			throw new DigiSignException(
+					"Internal error occurred during xml creation! Please try again or contact DigiSign");
 		}
 	}
 
@@ -118,7 +119,8 @@ public class XMLServiceImpl implements XMLService {
 				| InvalidAlgorithmParameterException | MarshalException | XMLSignatureException
 				| TransformerException e) {
 			LOGGER.error(ExceptionUtils.getStackTrace(e));
-			throw new DigiSignException("Internal error occurred during xml signing! Please try again or contact DigiSign");
+			throw new DigiSignException(
+					"Internal error occurred during xml signing! Please try again or contact DigiSign");
 		}
 	}
 
@@ -126,14 +128,15 @@ public class XMLServiceImpl implements XMLService {
 		try {
 			KeyStore ks = KeyStore.getInstance(espProperties.getKeyStoreType());
 			Resource keystoreFile = new DefaultResourceLoader()
-					.getResource("classpath:".concat(espProperties.getKeyStorePath()));
+					.getResource("classpath:" + espProperties.getKeyStorePath());
 			ks.load(keystoreFile.getInputStream(), espProperties.getKeyStorePass().toCharArray());
 			return (PrivateKey) ks.getKey(espProperties.getPrivateKeyAlias(),
 					espProperties.getPrivateKeyPass().toCharArray());
 		} catch (NoSuchAlgorithmException | CertificateException | IOException | UnrecoverableKeyException
 				| KeyStoreException e) {
 			LOGGER.error(ExceptionUtils.getStackTrace(e));
-			throw new DigiSignException("Internal error occurred during private key retrieval! Please try again or contact DigiSign");
+			throw new DigiSignException(
+					"Internal error occurred during private key retrieval! Please try again or contact DigiSign");
 		}
 	}
 }

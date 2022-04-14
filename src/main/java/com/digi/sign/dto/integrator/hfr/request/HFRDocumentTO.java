@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 import com.digi.sign.constant.HFRDocTemplateEnum;
 import com.digi.sign.dto.integrator.request.IntegratorDocumentTO;
-import com.digi.sign.exception.handling.EnumValue;
+import com.digi.sign.validation.EnumValue;
 
 public class HFRDocumentTO extends IntegratorDocumentTO {
 

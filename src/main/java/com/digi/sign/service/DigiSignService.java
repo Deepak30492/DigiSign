@@ -13,5 +13,6 @@ public interface DigiSignService {
 
 	ESPRequestTO generateEspRequest(IntegratorRequestTO request) throws DigiSignException;
 
-	FileSystemResource handleEspResponse(Map<String, String> requestParams) throws DigiSignException, DigiSignUserException;
+	FileSystemResource handleEspResponse(Map<String, String> requestParams)
+			throws DigiSignException, DigiSignUserException;
 }

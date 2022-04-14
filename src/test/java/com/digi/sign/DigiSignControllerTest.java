@@ -1,16 +1,25 @@
-package com.digi.sign.controller;
+package com.digi.sign;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
+import com.digi.sign.constant.DigiSignGlobalConstants;
+import com.digi.sign.dto.esp.request.ESPRequestTO;
 import com.digi.sign.dto.integrator.hfr.request.FacilityTO;
 import com.digi.sign.dto.integrator.hfr.request.HFRDocumentTO;
 import com.digi.sign.dto.integrator.request.IntegratorRequestTO;
@@ -18,7 +27,8 @@ import com.digi.sign.exception.DigiSignException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@WebMvcTest(DigiSignController.class)
+@AutoConfigureMockMvc
+@SpringBootTest
 class DigiSignControllerTest {
 
 	@Autowired
@@ -29,9 +39,19 @@ class DigiSignControllerTest {
 
 	@Test
 	void generatePdfAndSignTest() throws Exception {
-		mockMvc.perform(post("/digiSign/signDoc") //
+		MvcResult response = mockMvc.perform(post("/signDoc") //
 				.contentType(MediaType.APPLICATION_JSON) //
-				.content(createSuccessJson()));
+				.content(createSuccessJson()))
+				.andExpect(content().contentType(MediaType.TEXT_HTML_VALUE + ";charset=UTF-8")).andReturn();
+
+		assertEquals("espForm", response.getModelAndView().getViewName());
+
+		ESPRequestTO espRequest = (ESPRequestTO) response.getModelAndView().getModelMap()
+				.getAttribute(DigiSignGlobalConstants.ESP_FORM_MODEL_NAME);
+		
+		boolean exists = Files.exists(Paths.get("src/main/resources/pdfs/unsigned/" + espRequest.getAspTxnId() + "_with_placeholder_sign_field.pdf"));		
+		assertTrue(exists);
+
 	}
 
 	public String createSuccessJson() throws DigiSignException, JsonProcessingException {
