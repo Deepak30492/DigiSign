@@ -74,7 +74,7 @@ public class PDFServiceImpl implements PDFService {
 			HFRDocumentTO hfrDocument = (HFRDocumentTO) document;
 			inputHash.setDocInfo(pdfName);
 
-			if (HFRDocTemplateEnum.TEMPLATE_1.name().equals(hfrDocument.getTemplateId())) {
+			if (HFRDocTemplateEnum.TEMPLATE_1.equals(hfrDocument.getTemplateId())) {
 				createPdfInHfrTemplate1Format(pdfName, hfrDocument, dateWithTime);
 			}
 			inputHash.setPdfHash(getHashToSign(pdfName, hfrDocument));
